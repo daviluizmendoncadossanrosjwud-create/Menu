@@ -1,0 +1,761 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebirth AI Mobile</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #080810;
+  --panel: #11111e;
+  --purple: #a855f7;
+  --blue: #6c63ff;
+  --text: #f4f0ff;
+  --muted: #9995ad;
+  --border: #28243c;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top, #241044 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  max-width: 700px;
+  min-height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #b44dff, #5145ff);
+  font-size: 25px;
+  box-shadow: 0 0 25px #a855f744;
+}
+
+.brand {
+  font-weight: 850;
+  font-size: 20px;
+  letter-spacing: -.5px;
+}
+
+.brand span {
+  color: #c084fc;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.status {
+  margin-left: auto;
+  font-size: 11px;
+  color: #75f0ae;
+  border: 1px solid #285c45;
+  background: #10261d;
+  padding: 6px 9px;
+  border-radius: 20px;
+}
+
+.welcome {
+  padding: 26px 0 16px;
+}
+
+.welcome h1 {
+  font-size: clamp(25px, 7vw, 36px);
+  margin: 0 0 9px;
+  line-height: 1.15;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #d8a4ff, #8581ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.welcome p {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+
+.card {
+  background: #11111cdd;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 14px;
+  color: var(--text);
+  text-align: left;
+}
+
+.card:active {
+  border-color: var(--purple);
+  transform: scale(.98);
+}
+
+.card .emoji {
+  font-size: 22px;
+}
+
+.card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.card small {
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 15px;
+}
+
+.message {
+  max-width: 92%;
+  padding: 13px 15px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.ai {
+  align-self: flex-start;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top-left-radius: 4px;
+}
+
+.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #6337a5, #4035a5);
+  border-top-right-radius: 4px;
+}
+
+.codebox {
+  background: #090911;
+  border: 1px solid #39314f;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.codehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  background: #171322;
+  border-bottom: 1px solid #302740;
+  font-size: 12px;
+}
+
+.codebox pre {
+  padding: 12px;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #d7c6ff;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.mini {
+  background: #29203b;
+  color: #e8d8ff;
+  border: 1px solid #51406e;
+  padding: 7px 10px;
+  border-radius: 9px;
+  font-size: 11px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.action {
+  background: #191326;
+  color: #e8d8ff;
+  border: 1px solid #493462;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.approval {
+  border: 1px solid #6949a1;
+  background: #1a112b;
+  border-radius: 13px;
+  padding: 13px;
+  margin-top: 10px;
+}
+
+.approval strong {
+  font-size: 13px;
+}
+
+.approval p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #c7b9df;
+}
+
+.composer {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 0 max(10px, env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, var(--bg) 20%);
+  margin-top: auto;
+}
+
+.inputwrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #3b3056;
+  background: #11111d;
+  border-radius: 17px;
+  box-shadow: 0 0 24px #6d28d922;
+}
+
+textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: white;
+  padding: 10px 7px;
+  max-height: 120px;
+  min-height: 42px;
+  font-size: 14px;
+}
+
+textarea::placeholder {
+  color: #827b97;
+}
+
+.send {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 13px;
+  color: white;
+  font-size: 20px;
+  background: linear-gradient(135deg, #b44dff, #5145ff);
+}
+
+.disclaimer {
+  text-align: center;
+  color: #777187;
+  font-size: 10px;
+  padding: 10px 0;
+  line-height: 1.5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
+  padding: 11px 16px;
+  background: #262039;
+  border: 1px solid #60468b;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  display: none;
+  z-index: 20;
+  max-width: 90%;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .app {
+    padding: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <header>
+    <div class="logo">✦</div>
+    <div>
+      <div class="brand">REBIRTH <span>AI</span></div>
+      <div class="subtitle">Mobile assistant • Luau Studio</div>
+    </div>
+    <div class="status">● Interface ativa</div>
+  </header>
+
+  <section class="welcome" id="welcome">
+    <h1>O que vamos<br><span class="gradient">construir hoje?</span></h1>
+    <p>Descreva sua ideia e monte um exemplo de script para seu projeto Roblox.</p>
+  </section>
+
+  <section class="cards" id="cards">
+    <button class="card" onclick="example('Crie uma Part neon azul no Workspace')">
+      <span class="emoji">🧊</span>
+      <strong>Gerar uma Part</strong>
+      <small>Crie objetos com Instance.new</small>
+    </button>
+
+    <button class="card" onclick="example('Crie uma porta que abre quando o jogador toca nela')">
+      <span class="emoji">🚪</span>
+      <strong>Sistema de porta</strong>
+      <small>Exemplo de interação no Roblox</small>
+    </button>
+
+    <button class="card" onclick="example('Crie uma interface ScreenGui com um botão')">
+      <span class="emoji">📱</span>
+      <strong>Criar interface</strong>
+      <small>Gui, Frame e TextButton</small>
+    </button>
+
+    <button class="card" onclick="example('Explique como criar um sistema de dinheiro salvo')">
+      <span class="emoji">💎</span>
+      <strong>Sistema de dinheiro</strong>
+      <small>Aprenda a estrutura necessária</small>
+    </button>
+  </section>
+
+  <main class="chat" id="chat">
+    <div class="message ai">
+      ✦ E aí, desenvolvedor! Sou a interface Rebirth AI.
+
+      Escreva o que você quer criar. Posso gerar exemplos de Luau para você copiar e adaptar no Studio Lite.
+
+      <br>⚠️ Esta versão funciona localmente: ela não possui um modelo de IA conectado nem controla o Roblox diretamente.
+    </div>
+  </main>
+
+  <div class="composer">
+    <div class="inputwrap">
+      <textarea id="prompt" rows="1" placeholder="Descreva seu script..."></textarea>
+      <button class="send" onclick="sendMessage()" aria-label="Enviar">➤</button>
+    </div>
+    <div class="disclaimer">
+      Rebirth AI Mobile • Revise o código antes de usar.<br>
+      O site não executa scripts nem altera seu jogo automaticamente.
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+const chat = document.getElementById("chat");
+const promptInput = document.getElementById("prompt");
+
+let lastCode = "";
+
+function toast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    el.style.display = "none";
+  }, 2300);
+}
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.textContent = text;
+  chat.appendChild(div);
+  scrollDown();
+  return div;
+}
+
+function scrollDown() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
+
+function example(text) {
+  promptInput.value = text;
+  promptInput.focus();
+}
+
+function createPartCode() {
+  return `local Part = Instance.new("Part")
+
+Part.Name = "PartNeon"
+Part.Size = Vector3.new(4, 1, 4)
+Part.Position = Vector3.new(0, 5, 0)
+Part.Anchored = true
+Part.CanCollide = true
+Part.Material = Enum.Material.Neon
+Part.Color = Color3.fromRGB(0, 170, 255)
+
+Part.Parent = workspace`;
+}
+
+function createGuiCode() {
+  return `local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MinhaInterface"
+ScreenGui.ResetOnSpawn = false
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 250, 0, 150)
+Frame.Position = UDim2.new(0.5, -125, 0.5, -75)
+Frame.BackgroundColor3 = Color3.fromRGB(25, 20, 40)
+Frame.Parent = ScreenGui
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(0.8, 0, 0, 45)
+Button.Position = UDim2.new(0.1, 0, 0.35, 0)
+Button.Text = "Clique aqui"
+Button.TextScaled = true
+Button.Parent = Frame
+
+Button.MouseButton1Click:Connect(function()
+    print("Botão clicado!")
+end)
+
+ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")`;
+}
+
+function createDoorCode() {
+  return `local Door = script.Parent
+local aberto = false
+
+Door.Touched:Connect(function(hit)
+    local character = hit.Parent
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if humanoid and not aberto then
+        aberto = true
+
+        Door.Transparency = 0.5
+        Door.CanCollide = false
+
+        task.wait(3)
+
+        Door.Transparency = 0
+        Door.CanCollide = true
+        aberto = false
+    end
+end)`;
+}
+
+function createMoneyCode() {
+  return `-- Coloque este Script em ServerScriptService
+local Players = game:GetService("Players")
+
+Players.PlayerAdded:Connect(function(player)
+    local leaderstats = Instance.new("Folder")
+    leaderstats.Name = "leaderstats"
+    leaderstats.Parent = player
+
+    local Money = Instance.new("IntValue")
+    Money.Name = "Money"
+    Money.Value = 100
+    Money.Parent = leaderstats
+end)
+
+-- Este exemplo cria dinheiro durante a sessão.
+-- Para salvar após sair, implemente DataStoreService
+-- em um Script do servidor e teste com cuidado.`;
+}
+
+function findCode(prompt) {
+  const p = prompt.toLowerCase();
+
+  if (
+    p.includes("screengui") ||
+    p.includes("interface") ||
+    p.includes("botão") ||
+    p.includes("botao") ||
+    p.includes("textbutton") ||
+    p.includes("gui")
+  ) {
+    return {
+      title: "Interface Roblox • Luau",
+      code: createGuiCode(),
+      place: "LocalScript em StarterPlayerScripts ou StarterGui",
+      explanation: "Cria uma interface com painel e botão. A interface aparece para o jogador local."
+    };
+  }
+
+  if (
+    p.includes("porta") ||
+    p.includes("door")
+  ) {
+    return {
+      title: "Porta interativa • Luau",
+      code: createDoorCode(),
+      place: "Script dentro da Part que será a porta",
+      explanation: "Quando um personagem toca na porta, ela fica transparente e atravessável por três segundos."
+    };
+  }
+
+  if (
+    p.includes("dinheiro") ||
+    p.includes("money") ||
+    p.includes("leaderstats")
+  ) {
+    return {
+      title: "Sistema básico de dinheiro",
+      code: createMoneyCode(),
+      place: "Script em ServerScriptService",
+      explanation: "Cria uma estatística Money para cada jogador. O exemplo ainda não salva os valores quando o jogador sai."
+    };
+  }
+
+  if (
+    p.includes("part") ||
+    p.includes("bloco") ||
+    p.includes("objeto") ||
+    p.includes("neon")
+  ) {
+    return {
+      title: "Criador de Part • Luau",
+      code: createPartCode(),
+      place: "Script em ServerScriptService",
+      explanation: "Cria uma Part neon azul, ancorada e posicionada acima do ponto de origem."
+    };
+  }
+
+  return null;
+}
+
+function addCodeCard(result) {
+  lastCode = result.code;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "message ai";
+  wrapper.style.maxWidth = "100%";
+
+  const title = document.createElement("strong");
+  title.textContent = "✦ " + result.title;
+  wrapper.appendChild(title);
+
+  const description = document.createElement("p");
+  description.textContent = result.explanation;
+  wrapper.appendChild(description);
+
+  const location = document.createElement("p");
+  location.style.color = "#c4a8ff";
+  location.style.fontSize = "12px";
+  location.textContent = "📍 Onde colocar: " + result.place;
+  wrapper.appendChild(location);
+
+  const codebox = document.createElement("div");
+  codebox.className = "codebox";
+
+  const codehead = document.createElement("div");
+  codehead.className = "codehead";
+
+  const lang = document.createElement("span");
+  lang.textContent = "LUAU • ROBLOX";
+
+  const copy = document.createElement("button");
+  copy.className = "mini";
+  copy.textContent = "Copiar código";
+  copy.onclick = () => copyCode(result.code);
+
+  codehead.append(lang, copy);
+
+  const pre = document.createElement("pre");
+  const code = document.createElement("code");
+  code.textContent = result.code;
+  pre.appendChild(code);
+
+  codebox.append(codehead, pre);
+  wrapper.appendChild(codebox);
+
+  const actions = document.createElement("div");
+  actions.className = "actions";
+
+  const download = document.createElement("button");
+  download.className = "action";
+  download.textContent = "⬇ Baixar .lua";
+  download.onclick = () => downloadCode(result.code);
+
+  const explain = document.createElement("button");
+  explain.className = "action";
+  explain.textContent = "❔ Como usar";
+  explain.onclick = () => {
+    addMessage(
+      "1. Abra seu projeto no Studio Lite.\n" +
+      "2. Crie o Script ou LocalScript indicado acima.\n" +
+      "3. Cole o código no editor.\n" +
+      "4. Confira se o código está no local correto.\n" +
+      "5. Teste em uma cópia do projeto primeiro.",
+      "ai"
+    );
+  };
+
+  actions.append(download, explain);
+  wrapper.appendChild(actions);
+  chat.appendChild(wrapper);
+  scrollDown();
+}
+
+async function copyCode(code) {
+  try {
+    await navigator.clipboard.writeText(code);
+    toast("Código copiado!");
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = code;
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+      document.execCommand("copy");
+      toast("Código copiado!");
+    } catch (e) {
+      toast("Selecione e copie o código manualmente.");
+    }
+
+    area.remove();
+  }
+}
+
+function downloadCode(code) {
+  const blob = new Blob([code], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "rebirth-script.lua";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast("Download iniciado!");
+}
+
+function sendMessage() {
+  const text = promptInput.value.trim();
+  if (!text) return;
+
+  document.getElementById("welcome").classList.add("hidden");
+  document.getElementById("cards").classList.add("hidden");
+
+  addMessage(text, "user");
+  promptInput.value = "";
+
+  const result = findCode(text);
+
+  if (result) {
+    addMessage(
+      "Preparei um exemplo compatível com a ideia que você descreveu. Confira o código e o local onde ele deve ficar.",
+      "ai"
+    );
+    addCodeCard(result);
+    return;
+  }
+
+  addMessage(
+    "Ainda não tenho um modelo de IA conectado para entender qualquer pedido automaticamente.\n\n" +
+    "Esta demonstração gera exemplos para Part neon, interface com botão, porta interativa e dinheiro básico.\n\n" +
+    "Para responder a qualquer pedido de verdade, precisamos conectar o site a um serviço de IA por meio de um backend seguro.",
+    "ai"
+  );
+}
+
+promptInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+promptInput.addEventListener("input", function() {
+  this.style.height = "auto";
+  this.style.height = Math.min(this.scrollHeight, 120) + "px";
+});
+</script>
+</body>
+</html>
